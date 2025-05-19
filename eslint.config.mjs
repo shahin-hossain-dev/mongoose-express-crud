@@ -1,10 +1,16 @@
 import js from '@eslint/js';
-import globals from 'globals';
+import globals, { es2020, node } from 'globals';
 import tseslint from 'typescript-eslint';
 import { defineConfig } from 'eslint/config';
 import pluginJs from '@eslint/js';
 
 export default defineConfig([
+  {
+    env: {
+      node: true,
+      es2020: true,
+    },
+  },
   {
     ignores: ['.node_modules/*', '.dist/*'],
   },
