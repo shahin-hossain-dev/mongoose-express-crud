@@ -5,6 +5,7 @@ import { userRouters } from './app/modules/user/user.route';
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 
 app.use('/api/users', userRouters);
 

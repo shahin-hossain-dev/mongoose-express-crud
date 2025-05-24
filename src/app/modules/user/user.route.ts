@@ -8,6 +8,6 @@ const router = express.Router();
 router.get('/', userController.getAllUser);
 
 //post routes
-router.post('/', userController.createNewUser);
+router.post('/createNewUser', userController.createNewUser);
 
 export const userRouters = router;

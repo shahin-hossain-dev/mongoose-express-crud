@@ -6,7 +6,9 @@ const getAllUser = async (req: Request, res: Response) => {
 
 const createNewUser = async (req: Request, res: Response) => {
   try {
-    const body = req.body;
+    const userData = await req.body;
+
+    res.status(201).json({ data: userData });
   } catch (error: any) {
     console.log(error.message);
   }
