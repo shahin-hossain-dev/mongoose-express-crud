@@ -3,7 +3,7 @@ import TUser, { TUserModel } from './user.interface';
 
 const userSchema = new Schema<TUser, TUserModel>({
   userId: { type: Number, required: true, unique: true },
-  username: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   fullName: {
     firstName: { type: String, required: true },
@@ -18,7 +18,6 @@ const userSchema = new Schema<TUser, TUserModel>({
   isActive: Boolean,
   hobbies: {
     type: [String],
-    required: true,
   },
   address: {
     street: String,

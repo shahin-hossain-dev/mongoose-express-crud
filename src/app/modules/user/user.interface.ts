@@ -11,7 +11,7 @@ type TUser = {
   age: number;
   email: string;
   isActive: boolean;
-  hobbies: string[];
+  hobbies?: string[];
   address: {
     street: string;
     city: string;
