@@ -8,7 +8,6 @@ const userSchema = new Schema<TUser, TUserModel>({
   fullName: {
     firstName: { type: String, required: true },
     lastName: { type: String, require: true },
-    required: true,
   },
   age: {
     type: Number,

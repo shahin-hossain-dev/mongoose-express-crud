@@ -8,8 +8,6 @@ async function main() {
     app.listen(config.port, () => {
       console.log(`Server is Running on port ${config.port}`);
     });
-    console.log('Hello World');
-    
   } catch (error: any) {
     console.log(error.message);
   }

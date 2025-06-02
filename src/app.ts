@@ -4,15 +4,13 @@ import { userRouters } from './app/modules/user/user.route';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-app.use('/api/users', userRouters);
-
 app.get('/', (req: Request, res: Response) => {
-  res.send('Server is Running');
+  res.status(200).send("Hello! I'm User management Server. I'm running");
 });
 
-
+app.use('/api/users', userRouters);
 
 export default app;

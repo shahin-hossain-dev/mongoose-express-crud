@@ -1,12 +1,17 @@
 import TUser from './user.interface';
 import { UserModel } from './user.model';
+import UserValidation from './user.validation';
 
 export const createUserIntoDB = async (newUser: TUser) => {
   try {
     // await UserModel.isUserExist(newUser.userId as number);
-    const res = await UserModel.create(newUser);
-    console.log(res);
+    const data = UserValidation.parse(newUser);
+
+    const createNewUser = new UserModel(newUser);
+    const response = await createNewUser.save();
+
+    return response;
   } catch (error: any) {
-    console.log(error.message);
+    throw Error(error.message);
   }
 };

@@ -5,7 +5,7 @@ const router = express.Router();
 
 //get routes
 
-router.get('/', userController.getAllUser);
+router.get('/all-users', userController.getAllUser);
 
 //post routes
 router.post('/createNewUser', userController.createNewUser);
