@@ -3,6 +3,7 @@ import {
   createUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
+  updateUserIntoDB,
 } from "./user.services";
 
 /***********************************
@@ -69,7 +70,9 @@ const createNewUser = async (req: Request, res: Response) => {
 
 const updateUser = async (req: Request, res: Response) => {
   try {
+    console.log(req.body);
     const updateBody: unknown = req.body;
+    await updateUserIntoDB(updateBody);
   } catch (error: any) {
     console.log(error.message);
     res.status(404).json({

@@ -1,3 +1,4 @@
+import { userInfo } from "os";
 import TUser from "./user.interface";
 import { UserModel } from "./user.model";
 import UserValidation from "./user.validation";
@@ -59,3 +60,33 @@ export const createUserIntoDB = async (newUser: TUser) => {
 /***************************
  *      PUT Method
  ***************************/
+
+export const updateUserIntoDB = async (updateData: TUser) => {
+  const filter = { userId: updateData.userId };
+  const updates = {
+    userId: updateData.userId,
+    fullName: {
+      firstName: updateData.fullName.firstName,
+      lastName: updateData.fullName.lastName,
+    },
+    address: {
+      street: updateData.address.street,
+      city: updateData.address.city,
+      country: updateData.address.street,
+    },
+    username: updateData.username,
+    age: updateData.age,
+    email: updateData.email,
+    isActive: updateData.isActive,
+    hobbies: updateData.hobbies,
+  };
+
+  try {
+    const res = await UserModel.updateOne(filter, updates);
+
+    return res;
+  } catch (error: any) {
+    console.log(error.message);
+    throw Error("User not found");
+  }
+};
