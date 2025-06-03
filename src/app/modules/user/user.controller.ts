@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
-import { createUserIntoDB } from './user.services';
+import { createUserIntoDB, getAllUsersFromDB } from './user.services';
 
 const getAllUser = async (req: Request, res: Response) => {
-  //handle req, res
+  const data = await getAllUsersFromDB();
 
   res.status(200).json({
-    greeting: 'Hello World',
+    status: true,
+    message: 'user fetched successfully',
+    data,
   });
 };
 
