@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model } from "mongoose";
 
 type TOrders = {
   productName: string;
