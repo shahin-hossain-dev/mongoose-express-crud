@@ -5,6 +5,7 @@ import {
   getSingleUserFromDB,
   updateUserIntoDB,
 } from "./user.services";
+import TUser from "./user.interface";
 
 /***********************************
  *        get api's
@@ -70,11 +71,15 @@ const createNewUser = async (req: Request, res: Response) => {
 
 const updateUser = async (req: Request, res: Response) => {
   try {
-    console.log(req.body);
-    const updateBody: unknown = req.body;
-    await updateUserIntoDB(updateBody);
+    const updateBody: TUser = req.body;
+    const data = await updateUserIntoDB(updateBody);
+
+    res.status(200).json({
+      status: true,
+      message: "User Fetched Successfully",
+      data,
+    });
   } catch (error: any) {
-    console.log(error.message);
     res.status(404).json({
       success: false,
       message: error.message,
