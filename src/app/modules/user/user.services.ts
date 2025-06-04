@@ -1,4 +1,3 @@
-import { userInfo } from "os";
 import TUser from "./user.interface";
 import { UserModel } from "./user.model";
 import UserValidation from "./user.validation";
@@ -26,6 +25,10 @@ export const getAllUsersFromDB = async () => {
 export const getSingleUserFromDB = async (userId: number) => {
   try {
     const data = await UserModel.findOne({ userId }).select("-password");
+
+    if (!data) {
+      throw Error("User not found");
+    }
 
     return data;
   } catch (error: any) {
@@ -83,6 +86,10 @@ export const updateUserIntoDB = async (updateData: TUser) => {
 
   try {
     const res = await UserModel.updateOne(filter, updates);
+
+    if (res.matchedCount === 0) {
+      throw Error("User not found");
+    }
 
     return res;
   } catch (error: any) {
