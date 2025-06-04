@@ -1,4 +1,4 @@
-import TUser from "./user.interface";
+import TUser, { TOrders } from "./user.interface";
 import { UserModel } from "./user.model";
 import UserValidation from "./user.validation";
 
@@ -95,6 +95,26 @@ export const updateUserIntoDB = async (updateData: TUser) => {
   } catch (error: any) {
     console.log(error.message);
     throw Error("User not found");
+  }
+};
+
+export const updateOrderIntoDB = async (userId: number, orderData: TOrders) => {
+  console.log(userId, orderData);
+
+  try {
+    const res = await UserModel.updateOne(
+      { userId },
+      {
+        $set: {
+          orders: orderData,
+        },
+      },
+    );
+
+    return res;
+  } catch (error: any) {
+    console.log(error.message);
+    throw Error(error.message);
   }
 };
 

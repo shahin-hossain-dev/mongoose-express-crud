@@ -15,6 +15,7 @@ router.post("/createNewUser", userController.createNewUser);
 //put routes
 
 router.put("/:userId", userController.updateUser);
+router.put("/:userId/orders", userController.updateUserOrder);
 
 //DELETE Routes
 

@@ -4,9 +4,10 @@ import {
   deleteUserFromDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
+  updateOrderIntoDB,
   updateUserIntoDB,
 } from "./user.services";
-import TUser from "./user.interface";
+import TUser, { TOrders } from "./user.interface";
 
 /***********************************
  *        get api's
@@ -92,6 +93,20 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
+const updateUserOrder = async (req: Request, res: Response) => {
+  const userId = parseInt(req.params.userId);
+  const orderData: TOrders = req.body;
+
+  console.log(orderData);
+  const data = await updateOrderIntoDB(userId, orderData);
+
+  res.status(200).json({
+    status: true,
+    message: "Order updated Successfully",
+    data,
+  });
+};
+
 /***********************************
  *        DELETE API's
  ***********************************/
@@ -125,4 +140,5 @@ export const userController = {
   getSingleUser,
   updateUser,
   deleteUser,
+  updateUserOrder,
 };
