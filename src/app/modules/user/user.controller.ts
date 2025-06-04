@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   createUserIntoDB,
+  deleteUserFromDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
   updateUserIntoDB,
@@ -91,9 +92,37 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
+/***********************************
+ *        DELETE API's
+ ***********************************/
+
+const deleteUser = async (req: Request, res: Response) => {
+  const userId: number = parseInt(req.params.userId);
+
+  try {
+    const data = await deleteUserFromDB(userId);
+
+    res.status(200).json({
+      status: true,
+      message: "User Deleted Successfully",
+      data,
+    });
+  } catch (error: any) {
+    res.status(404).json({
+      status: false,
+      message: error.message,
+      error: {
+        code: 404,
+        description: error.message,
+      },
+    });
+  }
+};
+
 export const userController = {
   getAllUser,
   createNewUser,
   getSingleUser,
   updateUser,
+  deleteUser,
 };

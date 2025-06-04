@@ -97,3 +97,21 @@ export const updateUserIntoDB = async (updateData: TUser) => {
     throw Error("User not found");
   }
 };
+
+/***************************
+ *      DELETE Method
+ ***************************/
+export const deleteUserFromDB = async (userId: number) => {
+  try {
+    const res = await UserModel.deleteOne({ userId });
+
+    if (res.deletedCount === 0) {
+      throw Error("User not found");
+    }
+
+    return null;
+  } catch (error: any) {
+    console.log(error.message);
+    throw Error("User not found");
+  }
+};
