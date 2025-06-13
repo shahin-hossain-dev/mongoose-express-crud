@@ -1,5 +1,10 @@
 import { model, Schema } from "mongoose";
-import TUser, { TUserModel } from "./user.interface";
+import TUser, { TOrders, TUserModel } from "./user.interface";
+const orderSchema = new Schema<TOrders>({
+  productName: String,
+  price: Number,
+  quantity: Number,
+});
 
 const userSchema = new Schema<TUser, TUserModel>({
   userId: { type: Number, required: true, unique: true },
@@ -22,6 +27,9 @@ const userSchema = new Schema<TUser, TUserModel>({
     street: String,
     city: String,
     country: String,
+  },
+  orders: {
+    type: [orderSchema],
   },
 });
 

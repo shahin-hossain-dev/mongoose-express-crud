@@ -98,20 +98,24 @@ export const updateUserIntoDB = async (updateData: TUser) => {
   }
 };
 
-export const updateOrderIntoDB = async (userId: number, orderData: TOrders) => {
-  console.log(userId, orderData);
-
+export const updateOrderIntoDB = async (
+  userId: number,
+  orderData: { orders: TOrders[] },
+) => {
   try {
     const res = await UserModel.updateOne(
       { userId },
       {
-        $set: {
-          orders: orderData,
-        },
+        orders: orderData.orders,
+      },
+      {
+        upsert: true,
+        new: true,
+        setDefaultsOnInsert: true,
       },
     );
 
-    return res;
+    return null;
   } catch (error: any) {
     console.log(error.message);
     throw Error(error.message);
