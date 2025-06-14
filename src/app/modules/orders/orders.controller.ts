@@ -34,8 +34,6 @@ const getTotalPriceSingleUser = async (req: Request, res: Response) => {
 
     const data = await getTotalPriceFromDB(userId);
 
-    console.log(data);
-
     res.status(200).json({
       status: true,
       message: "Price get Successfully",

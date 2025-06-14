@@ -1,3 +1,4 @@
+import orderValidation from "../orders/order.validation";
 import TUser, { TOrders } from "./user.interface";
 import { UserModel } from "./user.model";
 import UserValidation from "./user.validation";
@@ -109,6 +110,8 @@ export const updateOrderIntoDB = async (
   orderData: { orders: TOrders[] },
 ) => {
   try {
+    orderValidation.parse(orderData.orders); //order validation with zod
+
     const res = await UserModel.updateOne(
       { userId },
       {

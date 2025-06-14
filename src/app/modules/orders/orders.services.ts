@@ -9,6 +9,11 @@ export const getAllOrdersFromDB = async (userId: number) => {
     const filter = { userId };
 
     const data = await UserModel.findOne(filter, { orders: 1 });
+
+    if (!data) {
+      throw Error("Order not found");
+    }
+
     return data;
   } catch (error: any) {
     console.log(error.message);
@@ -32,6 +37,10 @@ export const getTotalPriceFromDB = async (userId: number) => {
       },
       { $project: { totalPrice: 1 } },
     ]);
+
+    if (!res) {
+      throw Error("User not found");
+    }
 
     return { totalPrice: res[0].totalPrice };
   } catch (error: any) {
