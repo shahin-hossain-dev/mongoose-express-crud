@@ -7,7 +7,7 @@ import {
   updateOrderIntoDB,
   updateUserIntoDB,
 } from "./user.services";
-import TUser, { TOrders } from "./user.interface";
+import TUser from "./user.interface";
 
 /***********************************
  *        get api's
@@ -94,17 +94,26 @@ const updateUser = async (req: Request, res: Response) => {
 };
 
 const updateUserOrder = async (req: Request, res: Response) => {
-  const userId = parseInt(req.params.userId);
-  const orderData: TOrders = req.body;
+  try {
+    const userId = parseInt(req.params.userId);
+    const orderData = req.body;
 
-  console.log(orderData);
-  const data = await updateOrderIntoDB(userId, orderData);
-
-  res.status(200).json({
-    status: true,
-    message: "Order updated Successfully",
-    data,
-  });
+    const data = await updateOrderIntoDB(userId, orderData);
+    res.status(200).json({
+      status: true,
+      message: "Order updated Successfully",
+      data,
+    });
+  } catch (error: any) {
+    res.status(404).json({
+      status: false,
+      message: error.message,
+      error: {
+        code: 404,
+        description: error.message,
+      },
+    });
+  }
 };
 
 /***********************************

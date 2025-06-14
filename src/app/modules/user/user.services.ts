@@ -1,7 +1,7 @@
 import TUser, { TOrders } from "./user.interface";
 import { UserModel } from "./user.model";
 import UserValidation from "./user.validation";
-
+import bcrypt from "bcryptjs";
 /*********************
  *    GET Method
  *********************/
@@ -52,6 +52,12 @@ export const createUserIntoDB = async (newUser: TUser) => {
     const data = UserValidation.parse(newUser); //validation
 
     const createNewUser = new UserModel(newUser);
+
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(newUser.password, salt);
+
+    createNewUser.password = hash;
+
     const response = await createNewUser.save();
 
     return response;
