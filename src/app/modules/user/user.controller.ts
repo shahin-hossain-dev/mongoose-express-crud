@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import status from "http-status";
 import {
   createUserIntoDB,
   deleteUserFromDB,
@@ -8,6 +9,7 @@ import {
   updateUserIntoDB,
 } from "./user.services";
 import TUser from "./user.interface";
+import sendResponse from "../../utils/sendResponse";
 
 /***********************************
  *        get api's
@@ -15,9 +17,16 @@ import TUser from "./user.interface";
 const getAllUser = async (req: Request, res: Response) => {
   const data = await getAllUsersFromDB();
 
-  res.status(200).json({
-    status: true,
-    message: "user fetched successfully",
+  // res.status(200).json({
+  //   status: true,
+  //   message: "user fetched successfully",
+  //   data,
+  // });
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "User fetched Successfully",
     data,
   });
 };
@@ -51,12 +60,18 @@ const getSingleUser = async (req: Request, res: Response) => {
 const createNewUser = async (req: Request, res: Response) => {
   try {
     const userData = await req.body;
-    const response = await createUserIntoDB(userData);
+    const result = await createUserIntoDB(userData);
 
-    res.status(201).json({
-      status: true,
-      message: "User created successfully",
-      data: response,
+    // res.status(201).json({
+    //   status: true,
+    //   message: "User created successfully",
+    //   data: response,
+    // });
+    sendResponse(res, {
+      statusCode: status.CREATED,
+      success: true,
+      message: "User Created Successfully",
+      data: result,
     });
   } catch (error: any) {
     res.status(500).json({
@@ -74,12 +89,13 @@ const createNewUser = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
   try {
     const updateBody: TUser = req.body;
-    const data = await updateUserIntoDB(updateBody);
+    const result = await updateUserIntoDB(updateBody);
 
-    res.status(200).json({
-      status: true,
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
       message: "User Fetched Successfully",
-      data,
+      data: result,
     });
   } catch (error: any) {
     res.status(404).json({

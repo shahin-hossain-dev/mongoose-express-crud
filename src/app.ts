@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-import { userRouters } from "./app/modules/user/user.route";
-import { orderRouter } from "./app/modules/orders/order.routes";
+import router from "./app/router/routes";
 
 const app = express();
 
@@ -12,7 +11,7 @@ app.get("/", (req: Request, res: Response) => {
   res.status(200).send("Hello! I'm User management Server. I'm running");
 });
 
-app.use("/api/users", userRouters);
-app.use("/api/users", orderRouter);
+//all routers here
+app.use("/api", router);
 
 export default app;
