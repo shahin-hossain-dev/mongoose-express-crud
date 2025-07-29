@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { getAllOrdersFromDB, getTotalPriceFromDB } from "./orders.services";
+import sendResponse from "../../utils/sendResponse";
+import status from "http-status";
 
 /************************
  *      GET api's
@@ -9,12 +11,13 @@ const getAllOrderSingleUser = async (req: Request, res: Response) => {
   const userId = parseInt(req.params.userId);
 
   try {
-    const orders = await getAllOrdersFromDB(userId);
+    const result = await getAllOrdersFromDB(userId);
 
-    res.status(200).json({
-      status: true,
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
       message: "Order fetched successfully!",
-      data: orders,
+      data: result,
     });
   } catch (error: any) {
     res.status(404).json({
@@ -32,12 +35,13 @@ const getTotalPriceSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = parseInt(req.params.userId);
 
-    const data = await getTotalPriceFromDB(userId);
+    const result = await getTotalPriceFromDB(userId);
 
-    res.status(200).json({
-      status: true,
-      message: "Price get Successfully",
-      data: data,
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: "Fetched Price Successfully",
+      data: result,
     });
   } catch (error: any) {
     console.log(error.message);

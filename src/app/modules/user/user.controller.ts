@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import status from "http-status";
 import {
   createUserIntoDB,
@@ -34,12 +34,13 @@ const getAllUser = async (req: Request, res: Response) => {
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const query: number = parseInt(req.params.userId);
-    const data = await getSingleUserFromDB(query);
+    const result = await getSingleUserFromDB(query);
 
-    res.status(200).json({
-      status: true,
-      message: "User fetched successfully",
-      data,
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: "User fetched Successfully",
+      data: result,
     });
   } catch (error: any) {
     res.status(404).json({
@@ -57,28 +58,22 @@ const getSingleUser = async (req: Request, res: Response) => {
  *        post api's
  ***********************************/
 
-const createNewUser = async (req: Request, res: Response) => {
+const createNewUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const userData = await req.body;
     const result = await createUserIntoDB(userData);
-
-    // res.status(201).json({
-    //   status: true,
-    //   message: "User created successfully",
-    //   data: response,
-    // });
     sendResponse(res, {
       statusCode: status.CREATED,
       success: true,
       message: "User Created Successfully",
       data: result,
     });
-  } catch (error: any) {
-    res.status(500).json({
-      status: false,
-      message: "Something went wrong",
-      data: error.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -114,11 +109,18 @@ const updateUserOrder = async (req: Request, res: Response) => {
     const userId = parseInt(req.params.userId);
     const orderData = req.body;
 
-    const data = await updateOrderIntoDB(userId, orderData);
-    res.status(200).json({
-      status: true,
-      message: "Order updated Successfully",
-      data,
+    const result = await updateOrderIntoDB(userId, orderData);
+
+    // res.status(200).json({
+    //   status: true,
+    //   message: "Order updated Successfully",
+    //   data,
+    // });
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: "Order Updated Successfully",
+      data: result,
     });
   } catch (error: any) {
     res.status(404).json({
@@ -140,12 +142,12 @@ const deleteUser = async (req: Request, res: Response) => {
   const userId: number = parseInt(req.params.userId);
 
   try {
-    const data = await deleteUserFromDB(userId);
-
-    res.status(200).json({
-      status: true,
+    const result = await deleteUserFromDB(userId);
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
       message: "User Deleted Successfully",
-      data,
+      data: result,
     });
   } catch (error: any) {
     res.status(404).json({
