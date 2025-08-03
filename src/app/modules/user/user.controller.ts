@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import status from "http-status";
 import {
   createUserIntoDB,
@@ -10,18 +10,13 @@ import {
 } from "./user.services";
 import TUser from "./user.interface";
 import sendResponse from "../../utils/sendResponse";
+import catchAsync from "../../utils/catchAsync";
 
 /***********************************
  *        get api's
  ***********************************/
-const getAllUser = async (req: Request, res: Response) => {
+const getAllUser = catchAsync(async (req, res) => {
   const data = await getAllUsersFromDB();
-
-  // res.status(200).json({
-  //   status: true,
-  //   message: "user fetched successfully",
-  //   data,
-  // });
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -29,137 +24,81 @@ const getAllUser = async (req: Request, res: Response) => {
     message: "User fetched Successfully",
     data,
   });
-};
+});
 
-const getSingleUser = async (req: Request, res: Response) => {
-  try {
-    const query: number = parseInt(req.params.userId);
-    const result = await getSingleUserFromDB(query);
+const getSingleUser = catchAsync(async (req: Request, res: Response) => {
+  const query: number = parseInt(req.params.userId);
+  const result = await getSingleUserFromDB(query);
 
-    sendResponse(res, {
-      statusCode: status.OK,
-      success: true,
-      message: "User fetched Successfully",
-      data: result,
-    });
-  } catch (error: any) {
-    res.status(404).json({
-      status: false,
-      message: error.message,
-      error: {
-        code: 404,
-        description: error.message,
-      },
-    });
-  }
-};
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "User fetched Successfully",
+    data: result,
+  });
+});
 
 /***********************************
  *        post api's
  ***********************************/
 
-const createNewUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const userData = await req.body;
-    const result = await createUserIntoDB(userData);
-    sendResponse(res, {
-      statusCode: status.CREATED,
-      success: true,
-      message: "User Created Successfully",
-      data: result,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+const createNewUser = catchAsync(async (req, res) => {
+  const userData = await req.body;
+  const result = await createUserIntoDB(userData);
+
+  sendResponse(res, {
+    statusCode: status.CREATED,
+    success: true,
+    message: "User Created Successfully",
+    data: result,
+  });
+});
 
 /***********************************
  *        PUT API's
  ***********************************/
 
-const updateUser = async (req: Request, res: Response) => {
-  try {
-    const updateBody: TUser = req.body;
-    const result = await updateUserIntoDB(updateBody);
+const updateUser = catchAsync(async (req: Request, res: Response) => {
+  const updateBody: TUser = req.body;
+  const result = await updateUserIntoDB(updateBody);
 
-    sendResponse(res, {
-      statusCode: status.OK,
-      success: true,
-      message: "User Fetched Successfully",
-      data: result,
-    });
-  } catch (error: any) {
-    res.status(404).json({
-      success: false,
-      message: error.message,
-      error: {
-        code: 404,
-        description: error.message,
-      },
-    });
-  }
-};
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "User Fetched Successfully",
+    data: result,
+  });
+});
 
-const updateUserOrder = async (req: Request, res: Response) => {
-  try {
-    const userId = parseInt(req.params.userId);
-    const orderData = req.body;
+const updateUserOrder = catchAsync(async (req: Request, res: Response) => {
+  const userId = parseInt(req.params.userId);
+  const orderData = req.body;
 
-    const result = await updateOrderIntoDB(userId, orderData);
+  const result = await updateOrderIntoDB(userId, orderData);
 
-    // res.status(200).json({
-    //   status: true,
-    //   message: "Order updated Successfully",
-    //   data,
-    // });
-    sendResponse(res, {
-      statusCode: status.OK,
-      success: true,
-      message: "Order Updated Successfully",
-      data: result,
-    });
-  } catch (error: any) {
-    res.status(404).json({
-      status: false,
-      message: error.message,
-      error: {
-        code: 404,
-        description: error.message,
-      },
-    });
-  }
-};
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Order Updated Successfully",
+    data: result,
+  });
+});
 
 /***********************************
  *        DELETE API's
  ***********************************/
 
-const deleteUser = async (req: Request, res: Response) => {
+const deleteUser = catchAsync(async (req: Request, res: Response) => {
   const userId: number = parseInt(req.params.userId);
 
-  try {
-    const result = await deleteUserFromDB(userId);
-    sendResponse(res, {
-      statusCode: status.OK,
-      success: true,
-      message: "User Deleted Successfully",
-      data: result,
-    });
-  } catch (error: any) {
-    res.status(404).json({
-      status: false,
-      message: error.message,
-      error: {
-        code: 404,
-        description: error.message,
-      },
-    });
-  }
-};
+  const result = await deleteUserFromDB(userId);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "User Deleted Successfully",
+    data: result,
+  });
+});
 
 export const userController = {
   getAllUser,

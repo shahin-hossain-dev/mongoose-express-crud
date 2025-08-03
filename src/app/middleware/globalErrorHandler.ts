@@ -6,8 +6,6 @@ const globalErrorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  console.log("Error: Im Working");
-
   const errorStatusCode = status.INTERNAL_SERVER_ERROR;
   const errorMessage = error.message || "Something went wrong";
 
